@@ -1,14 +1,25 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
+    loginUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   return (
@@ -83,6 +94,7 @@ const Login = () => {
             Log in
           </button>
         </form>
+        {error && <p className="text-red-400 text-center">{error}</p>}
         <p className="text-sm text-center text-gray-300">
           Don't have an account?{" "}
           <Link
