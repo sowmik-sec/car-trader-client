@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
-  const [user, setUser] = useState(null); // Replace this with actual user authentication logic
+  const { user, logOut } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        console.log("User Signed Out");
+      })
+      .catch((err) => console.log(err?.message));
   };
 
   return (
@@ -40,7 +49,7 @@ const Navbar = () => {
           </Link>
           {user ? (
             <button
-              onClick={() => setUser(null)}
+              onClick={handleLogOut}
               className="text-white hover:text-gray-400"
             >
               Logout
@@ -104,7 +113,7 @@ const Navbar = () => {
           </Link>
           {user ? (
             <button
-              onClick={() => setUser(null)}
+              onClick={handleLogOut}
               className="block w-full text-left px-2 py-1 text-white hover:bg-gray-700"
             >
               Logout
