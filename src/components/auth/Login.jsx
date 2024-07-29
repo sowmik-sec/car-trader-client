@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { loginUser, googleSignIn } = useContext(AuthContext);
+  const { loginUser, googleSignIn, resetPassword } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,6 +33,14 @@ const Login = () => {
       .catch((err) => {
         setError(err.message);
       });
+  };
+
+  const handleResetPassword = () => {
+    resetPassword(email)
+      .then(() => {
+        console.log("Password reset email sent!");
+      })
+      .catch((err) => setError(err.message));
   };
 
   return (
@@ -93,6 +101,7 @@ const Login = () => {
             </div>
             <div className="text-sm">
               <a
+                onClick={handleResetPassword}
                 href="#"
                 className="font-medium text-teal-400 hover:text-teal-300"
               >

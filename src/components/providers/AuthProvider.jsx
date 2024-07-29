@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -36,6 +37,9 @@ function AuthProvider({ children }) {
       photoURL: photo,
     });
   };
+  const resetPassword = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
@@ -56,6 +60,7 @@ function AuthProvider({ children }) {
     loginUser,
     googleSignIn,
     updateUserProfile,
+    resetPassword,
     logOut,
   };
   return (
