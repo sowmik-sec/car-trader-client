@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser, googleSignIn } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,6 +19,16 @@ const Login = () => {
       .then((result) => {
         console.log(result.user);
         navigate(location?.state ? location.state : "/");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((result) => {
+        console.log(result.user);
       })
       .catch((err) => {
         setError(err.message);
@@ -98,6 +108,12 @@ const Login = () => {
           </button>
         </form>
         {error && <p className="text-red-400 text-center">{error}</p>}
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full px-4 py-2 text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+        >
+          Continue with Google
+        </button>
         <p className="text-sm text-center text-gray-300">
           Don't have an account?{" "}
           <Link
