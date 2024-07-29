@@ -9,7 +9,7 @@ const SignUp = () => {
   const [photoURL, setPhotoURL] = useState("");
   const [error, setError] = useState("");
 
-  const { signUpUser } = useContext(AuthContext);
+  const { signUpUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -17,6 +17,11 @@ const SignUp = () => {
     signUpUser(email, password)
       .then((result) => {
         console.log(result.user);
+        updateUserProfile(fullName, photoURL)
+          .then(() => {
+            console.log("Profile updated");
+          })
+          .catch((err) => setError(err.message));
         navigate("/");
       })
       .catch((error) => {
