@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
@@ -20,7 +21,23 @@ const SignUp = () => {
         updateUserProfile(fullName, photoURL)
           .then(() => {
             console.log("Profile updated");
-            navigate("/");
+            const createdAt = result.user?.metadata?.creationTime;
+            const user = { email, createdAt };
+            fetch("http://localhost:5000/user", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(user),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.acknowledged) {
+                  toast.success("Your account has been created");
+                }
+                navigate("/");
+              })
+              .catch((err) => setError(err?.message));
           })
           .catch((err) => {
             setError(err.message);
@@ -34,6 +51,7 @@ const SignUp = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <Toaster />
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 shadow-lg rounded-lg">
         <h2 className="text-3xl font-bold text-center text-teal-400">
           Sign Up
