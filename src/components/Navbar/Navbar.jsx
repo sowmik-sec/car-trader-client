@@ -1,11 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [curUser, setCurUser] = useState(user);
   const [isOpen, setIsOpen] = useState(false);
-
+  useEffect(() => {
+    setCurUser(user);
+  }, [user]);
+  console.log(user);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -31,7 +35,7 @@ const Navbar = () => {
             <span className="text-white text-xl font-bold">Car Trader</span>
           </Link>
         </div>
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-4 items-center">
           <Link to="/" className="text-white hover:text-gray-400">
             Home
           </Link>
@@ -47,13 +51,21 @@ const Navbar = () => {
           <Link to="/contact" className="text-white hover:text-gray-400">
             Contact
           </Link>
-          {user ? (
-            <button
-              onClick={handleLogOut}
-              className="text-white hover:text-gray-400"
-            >
-              Logout
-            </button>
+          {curUser ? (
+            <>
+              <button
+                onClick={handleLogOut}
+                className="text-white hover:text-gray-400"
+              >
+                Logout
+              </button>
+              <img
+                className="w-12 h-12 rounded-full"
+                title={curUser.displayName}
+                src={curUser.photoURL}
+                alt=""
+              />
+            </>
           ) : (
             <Link to="/login" className="text-white hover:text-gray-400">
               Login
@@ -111,13 +123,16 @@ const Navbar = () => {
           >
             Contact
           </Link>
-          {user ? (
-            <button
-              onClick={handleLogOut}
-              className="block w-full text-left px-2 py-1 text-white hover:bg-gray-700"
-            >
-              Logout
-            </button>
+          {curUser ? (
+            <>
+              <button
+                onClick={handleLogOut}
+                className="text-white hover:text-gray-400"
+              >
+                Logout
+              </button>
+              <img title={curUser.displayName} src={curUser.photoURL} alt="" />
+            </>
           ) : (
             <Link
               to="/login"
