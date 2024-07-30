@@ -15,7 +15,7 @@ import auth from "../../firebase/firebase.config";
 export const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState("Sowmik");
+  const [user, setUser] = useState("");
   const [loading, setLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
   const signUpUser = (email, password) => {
@@ -32,9 +32,16 @@ function AuthProvider({ children }) {
   };
   const updateUserProfile = (name, photo) => {
     setLoading(true);
-    return updateProfile(auth, {
+    return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photo,
+    }).then(() => {
+      setUser((prevUser) => ({
+        ...prevUser,
+        displayName: name,
+        photoURL: photo,
+      }));
+      setLoading(false);
     });
   };
   const resetPassword = (email) => {
@@ -55,6 +62,7 @@ function AuthProvider({ children }) {
   }, []);
   const authInfo = {
     user,
+    setUser,
     signUpUser,
     loading,
     loginUser,
