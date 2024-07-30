@@ -20,9 +20,12 @@ const SignUp = () => {
         updateUserProfile(fullName, photoURL)
           .then(() => {
             console.log("Profile updated");
+            navigate("/");
           })
-          .catch((err) => setError(err.message));
-        navigate("/");
+          .catch((err) => {
+            setError(err.message);
+            console.error(err);
+          });
       })
       .catch((error) => {
         setError(error.message);
