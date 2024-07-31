@@ -4,6 +4,7 @@ import NotFound from "../components/NotFound/NotFound";
 import Home from "../components/Home/Home";
 import Login from "../components/auth/Login";
 import SignUp from "../components/auth/SignUp";
+import AddProduct from "../components/AddProduct/AddProduct";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/add-product",
+        element: <AddProduct />,
       },
     ],
   },
