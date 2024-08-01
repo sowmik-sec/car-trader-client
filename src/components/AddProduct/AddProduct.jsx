@@ -20,7 +20,7 @@ function AddProduct() {
     e.preventDefault();
     // Handle form submission logic here
     console.log(formData);
-    fetch("http://localhost:5000/add-car", {
+    fetch("http://localhost:5000/car", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -31,7 +31,7 @@ function AddProduct() {
       .then((data) => {
         if (data.acknowledged) {
           toast.success("Car Successfully added");
-          setFormData(null);
+          setFormData({});
         }
       });
   };
